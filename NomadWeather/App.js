@@ -1,6 +1,8 @@
 import React from "react";
-import { View  , Text, StyleSheet } from "react-native";
+import { View  , Text, StyleSheet ,Dimensions, ScrollView } from "react-native";
 
+//const {width:SCREEN_WIDTH} = Dimensions.get('window'); //object를 get
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function App(){
   return (
@@ -8,15 +10,21 @@ export default function App(){
       <View style={styles.city}>
         <Text style={styles.cityName}> Seoul</Text>
       </View>
-      <View style={styles.weather}>
+      <ScrollView pagingEnabled horizontal contentContainerStyle={styles.weather}> 
           <View style={styles.day}>
             <Text style={styles.temp}>27</Text> 
             <Text style={styles.description}>Sunny</Text>
-           
           </View>
-      </View>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text> 
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text> 
+            <Text style={styles.description}>Sunny</Text> 
+          </View>
+      </ScrollView>
     </View>
-
   )
 };
 
@@ -32,18 +40,14 @@ export default function App(){
   },
     cityName:{
       fontSize:68,
-      fontWeight:"500"
-
+      fontWeight:"500",
   },
     weather:{
-      flex:3,
-    
-    },
-
-    day:{
-      flex:1,
       backgroundColor:"teal",
-      
+    },
+    day:{
+      // flex:1,
+      width: SCREEN_WIDTH, //demension으로 화면의 너비만큼 day의 너비를 지정
       alignItems:"center",
     },
     temp:{
@@ -54,7 +58,4 @@ export default function App(){
       marginTop:-38,
     fontSize:60,
     }
-
-}
-  
-  )
+})
