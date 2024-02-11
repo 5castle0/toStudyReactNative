@@ -1,14 +1,33 @@
-import React from "react";
+
 import { View  , Text, StyleSheet ,Dimensions, ScrollView } from "react-native";
+import React, {useEffect, useState} from "react";
+import * as Location from 'expo-location';
 
 //const {width:SCREEN_WIDTH} = Dimensions.get('window'); //object를 get
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function App(){
+  const [city, setCity] = useState("Loading...")
+  const [location, setLocation] = useState();
+  const [ok, setOk] = useState(true);
+  const ask = async()=>{
+    //const permission = await Location.requestPermissionsAsync(); //if granted, we can ask location but, if not, we cant ask location and will change UI 
+    const {granted} = await Location.requestPermissionsAsync(); //in permission object, there is a 'granted'
+    if(!granted){
+      setOk(false);
+    }
+
+    const {coords:{latitude, longitude}} = await Location.getCurrentPositionAsync({accuracy:5})
+    const location = await Location.reverseGeocodeAsync({latitude,longitude},{useGoogleMaps:false})
+    setCity(location[0].city);
+  };
+  useEffect(()=>{
+    ask();
+  }, [])
   return (
     <View style={styles.container}>
       <View style={styles.city}>
-        <Text style={styles.cityName}> Seoul</Text>
+        <Text style={styles.cityName}> {city}</Text>
       </View>
       <ScrollView pagingEnabled horizontal contentContainerStyle={styles.weather}> 
           <View style={styles.day}>
