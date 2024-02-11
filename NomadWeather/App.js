@@ -12,7 +12,7 @@ export default function App(){
           <View style={styles.day}>
             <Text style={styles.temp}>27</Text> 
             <Text style={styles.description}>Sunny</Text>
-            <Text>to test!!!!!</Text>
+           
           </View>
       </View>
     </View>
