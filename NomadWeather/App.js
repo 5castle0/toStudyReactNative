@@ -2,11 +2,19 @@
 import { View  , Text, StyleSheet , ActivityIndicator,Dimensions, ScrollView } from "react-native";
 import React, {useEffect, useState} from "react";
 import * as Location from 'expo-location';
+import { StatusBar } from "expo-status-bar";
+import {Fontisto} from "@expo/vector-icons";
 
 //const {width:SCREEN_WIDTH} = Dimensions.get('window'); //object를 get
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const API_KEY = "784ab24ff2ed5d94d4288abed9e25d13";
+
+const icons={
+  "Clouds":"cloudy",
+  "Clear":"day-sunny",
+  "Rain":"rain",
+}
 
 export default function App(){
   const [city, setCity] = useState("Loading...")
@@ -35,14 +43,19 @@ export default function App(){
         <Text style={styles.cityName}> {city}</Text>
       </View>
       <ScrollView pagingEnabled horizontal contentContainerStyle={styles.weather}> 
+      
          {days.length===0 ?
          (<View style={styles.day}>
          <ActivityIndicator color="black"></ActivityIndicator>  
           </View>) : 
           (days.map((day, index)=>
           <View key={index} style={styles.day}> 
+          <View style={{flexDirection:"row", alignItems:"center", justifyContent:"space-between" ,width:"100%"}}>
             <Text style={styles.temp}>{parseFloat(day.temp.day).toFixed(1)}</Text>
-            <Text style = {styles.day}>{day.weather[0].main}</Text>
+            <Fontisto name={icons[day.weather[0].main]} size={66} color="white" />
+            </View>
+            
+            <Text style = {styles.description}>{day.weather[0].main}</Text>
           </View>))
          
          }
@@ -68,18 +81,21 @@ export default function App(){
   },
     weather:{
       backgroundColor:"teal",
+      
     },
     day:{
       // flex:1,
       width: SCREEN_WIDTH, //demension으로 화면의 너비만큼 day의 너비를 지정
-      alignItems:"center",
+      alignItems:"flex-start",
     },
     temp:{
       marginTop: 50,
-      fontSize:178,
+      fontSize:100,
     },
     description:{
-      marginTop:-38,
-    fontSize:60,
+      marginTop:-15,
+    fontSize:35,
+    fontWeight:"500",
     }
 })
+
