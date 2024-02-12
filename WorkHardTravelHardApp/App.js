@@ -8,9 +8,19 @@ import {useState} from "react"
 export default function App(){
   const [working, setWorking] = useState(true);
   const [text, setText] = useState("");
+  const [toDos,setToDos] = useState({}); //[]을 써서 구현할 수도 있음
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
   const onChangeText = (payload) => setText(payload);
+  const addToDo = () => {
+    if(text===""){ //아무것도 입력을 하지 않았을 때
+      return
+    }
+    const newToDos = Object.assign({},toDos,{[Date.now()]:{text,work:working}}) //to add object
+    //save to do
+    setText("");
+    console.log(newToDos);
+  }
   
   return(
   <View style={styles.container}>
@@ -25,6 +35,7 @@ export default function App(){
       </TouchableOpacity>  
       </View>
       <TextInput 
+        onSubmitEditing={addToDo}
         onChangeText={onChangeText} 
         placeholder={working ? "Add a To Do": "Where do you want to go?"} 
         style={styles.input}
