@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, TextInput} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ScrollView} from "react-native";
 import { theme } from "./colors";
 import {useState} from "react"
 
@@ -16,10 +16,11 @@ export default function App(){
     if(text===""){ //아무것도 입력을 하지 않았을 때
       return
     }
-    const newToDos = Object.assign({},toDos,{[Date.now()]:{text,work:working}}) //to add object
-    //save to do
+    //const newToDos = Object.assign({},toDos,{[Date.now()]:{text,work:working}}) //to add object
+    const newToDos = {...toDos,[Date.now()]:{text,work: working}} //same thing with upper code
+    setToDos(newToDos);
     setText("");
-    console.log(newToDos);
+   
   }
   
   return(
@@ -41,6 +42,11 @@ export default function App(){
         style={styles.input}
         value={text}
         ></TextInput>
+        <ScrollView>
+          {Object.keys(toDos).map((key) => (<View style={styles.toDo} key={key}>
+              <Text style={styles.toDoText}>{toDos[key].text}</Text>
+            </View>))}
+        </ScrollView>
   </View>
   ); 
 } 
@@ -65,8 +71,21 @@ const styles = StyleSheet.create({
     paddingVertical:15,  //input창에서 수직적으로 padding을 추가해줌
     paddingHorizontal: 20,   // input창에서 수평적으로 padding을 추가해줌
     borderRadius:30,   //input창의 모습을 둥글게 만들어줌
-    marginTop:10,   
+    marginVertical:10,   
     fontSize:18,
+  },
+  toDo:{
+    backgroundColor:theme.toDoBg,
+    marginBottom:10,
+    paddingVertical:20,
+    paddingHorizontal:20,
+    borderRadius:15,
+
+  },
+  toDoText:{
+    color:"white",
+    fontSize:16,
+    fontWeight:"500",
 
   }
 })
